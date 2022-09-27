@@ -4,6 +4,8 @@
 
 # Fasara
 
+Service like stackoverflow for muslims.
+
 ### Create `.env` files
 
 - `cp .env.example .env`
