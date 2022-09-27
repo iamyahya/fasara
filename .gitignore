@@ -1,5 +1,5 @@
 .env
-#var/
+var/
 __pycache__/
 ui/dist
 
