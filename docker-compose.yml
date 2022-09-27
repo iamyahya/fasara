@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  datahost:
+    container_name: datahost
+    image: postgres
+    # Close ports on production mode
+    # ports:
+    #   - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - "./var/postgres:/var/lib/postgresql/data"
+  api:
+    container_name: api
+    build: api
+    # Close ports on production mode
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./api:/code"
+    environment:
+      WAIT_HOSTS: datahost:5432
+  ui:
+    container_name: ui
+    build: ui
+    # Close ports on production mode
+    ports:
+       - "8080:8080"
+    volumes:
+      - "./ui:/code"
+      - /code/node_modules
+    environment:
+      WAIT_TIMEOUT: 2400
+      WAIT_SLEEP_INTERVAL: 60
+      # Comment prev parameters after first project building
+      WAIT_HOSTS: api:8000
+  # Uncomment next service for production model
+  # tor:
+  #   container_name: tor
+  #   image: thetorproject/obfs4-bridge:latest
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - ./tor.conf:/etc/tor/torrc
+  #     - ./var/tor:/var/lib/tor/hidden_services
+  #   environment:
+  #     WAIT_HOSTS: ui:8080

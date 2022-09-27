@@ -1,0 +1,9 @@
+.env
+#var/
+__pycache__/
+ui/dist
+
+# Editors
+*.swp
+.idea
+venv
